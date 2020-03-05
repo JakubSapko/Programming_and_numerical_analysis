@@ -29,7 +29,7 @@ int main(){
 
 cout << " N primorial(N)\n";
 	for (int n = 0; n <= 53; n++){
-		cout <<setw(2) << n                                       //simple output manipulation for readers' sake
+		cout << setw(2) << n                                       //simple output manipulation for readers' sake
 			 << setw(21) << primorial(n) << '\n';
 	}
 
