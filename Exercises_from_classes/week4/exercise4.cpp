@@ -26,12 +26,35 @@ int numDiff(int arr[], int n)
     return val; 
 } 
 
+bool isPrime(int n){                           
+	if (n<=1){return false;}
+	for (int i = 2; i < n; i++){
+		if (n % i == 0){
+			return false;
+		}
+	}
+	return true;}
+
+int fillWithPrimes(int arr[], size_t sz){
+	bool a = true;
+	int i = 1;
+	int j = 0;
+	while (a){
+		if (isPrime(i)){
+			arr[j] = i;
+			j++;
+			if (j==sz){a = false;}}
+		i++;
+	}
+	return arr[sz-1];
+}
+
 int main(){
 
-int arr[]{1,1,2,3,3};
 size_t sz = 5;
+int arr[sz];
 
-cout << numDiff(arr, sz);
+cout << fillWithPrimes(arr, sz);
 
 return 0;
 }
