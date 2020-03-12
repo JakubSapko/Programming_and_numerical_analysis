@@ -11,14 +11,27 @@ bool allDiff(const int arr[], size_t sz){
 	}
 	return true;
 }
-		
+
+int numDiff(int arr[], int n) 
+{ 
+    int val = 1; 
+    for (int i = 1; i < n; i++) { 
+        int k = 0; 
+        for (k = 0; k < i; k++) 
+            if (arr[i] == arr[k]) 
+                break; 
+        if (i == k) 
+            val++; 
+    } 
+    return val; 
+} 
 
 int main(){
 
-int arr[]{1,2,3,4,5};
+int arr[]{1,1,2,3,3};
 size_t sz = 5;
 
-cout << allDiff(arr, sz);
+cout << numDiff(arr, sz);
 
 return 0;
 }
