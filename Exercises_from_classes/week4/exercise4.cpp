@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -49,12 +50,33 @@ int fillWithPrimes(int arr[], size_t sz){
 	return arr[sz-1];
 }
 
+/*int fillGaps(int arr[], size_t sz){
+	int min = *min_element(arr, arr+sz);
+	for (int i = 0; i < sz; i++){
+		if (arr[i] == min){continue;}
+		else 
+	}
+	return arr[sz-1];
+	}
+*/
+
+size_t blockRem(int arr[], size_t sz, size_t from, size_t to){
+	int i, j = 0;
+	for (i = 0; i<sz; i++){
+		if (i<=from || i>to){
+			arr[j] = arr[i];
+			j++;
+		}
+	}
+	return j;
+}		
+
 int main(){
 
-size_t sz = 5;
-int arr[sz];
+size_t sz = 6;
+int arr[]{1, 2, 3, 4, 5, 6};
 
-cout << fillWithPrimes(arr, sz);
+cout << blockRem(arr, sz, 2, 4);
 
 return 0;
 }
