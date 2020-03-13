@@ -1,7 +1,10 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 
 using namespace std;
+
+//----Functions for arrays----//
 
 bool allDiff(const int arr[], size_t sz){
 	for (int i = 0; i<sz; i++){
@@ -71,12 +74,40 @@ size_t blockRem(int arr[], size_t sz, size_t from, size_t to){
 	return j;
 }		
 
+
+//----Functions for vectors----//
+
+bool allDiffVec(const vector<int>& vec){
+	for (int i = 0; i<vec.size(); i++){
+		int val = vec[i];
+		for ( int k = i+1; k<vec.size(); k++){
+			if (vec[k] == val){return false;}
+		}
+	}
+	return true;
+}
+
+int numDiffVec(const vector<int>& vec){
+    int val = 1; 
+    for (int i = 1; i < vec.size(); i++) { 
+        int k = 0; 
+        for (k = 0; k < i; k++) 
+            if (vec[i] == vec[k]) 
+                break; 
+        if (i == k) 
+            val++; 
+    } 
+    return val; 
+}
+
 int main(){
 
-size_t sz = 6;
-int arr[]{1, 2, 3, 4, 5, 6};
+int a[]{1, 1, 1, 3, 1, 1, 2};
+size_t sza = sizeof(a)/sizeof(*a);
+vector<int> b(a, a+sza);
 
-cout << blockRem(arr, sz, 2, 4);
+
+cout << numDiffVec(b);
 
 return 0;
 }
