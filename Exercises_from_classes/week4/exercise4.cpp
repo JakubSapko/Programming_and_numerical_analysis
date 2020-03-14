@@ -130,13 +130,103 @@ int fillWithPrimesVec(vector<int>& vec){
 	return vec[0];
 }
 
+int fillGapsVec(vector<int>& vec)
+{
+    int min = INT_MAX;
+    int max = INT_MIN;
+    for (size_t i = 0; i < vec.size(); i++) {
+        if (vec[i] < min)
+            min = vec[i];
+        if (vec[i] > max)
+            max = vec[i];
+    }
+    int lmin = min;
+    int w = min;
+    do {
+        for (size_t i = 0; i < vec.size(); i++)
+            if (vec[i] == min)
+                vec[i] = w;
+        w++;
+        lmin = min;
+        min = INT_MAX;
+        for (size_t i = 0; i < vec.size(); i++)
+            if (vec[i] <= min && vec[i] > lmin)
+                min = vec[i];
+    } while (lmin != max);
+    return 0;
+}
+
+size_t blockRem(vector<int>& vec, size_t from, size_t to){
+	int i, j = 0;
+	for (i = 0; i<vec.size(); i++){
+		if (i<=from || i>to){
+			vec[j] = vec[i];
+			j++;
+		}
+	}
+	return j;
+}		
+
+//----FIN----//
+
 int main(){
+
+int a[]{3, 2, 3, 2, 5};
+size_t sza = sizeof(a)/sizeof(*a);
+vector<int> b(a, a+sza);
+cout << "allDiff: " << boolalpha
+	 << "a - " << allDiff(a, sza) << ", "
+	 << "b - " << allDiffVec(b) << "\n";
+cout << "numDiff: "
+	 << "a - " << numDiff(a, sza) << ", "
+	 << "b - " << numDiffVec(b) << "\n";
 
 int c[15];
 size_t szc = sizeof(c)/sizeof(*c);
-vector<int> d(szc,0);
+vector<int> d(szc, 0);
+auto lastc = fillWithPrimes(c, szc);
+cout << "Primes: ";
+for (auto x : c ) cout << x << " ";
+cout << "\n Last: " << lastc << "\n";
+auto lastd = fillWithPrimesVec(d);
+cout << "Primes: ";
+for (auto x : d) cout << x << " ";
+cout << "\n Last: " << lastd << "\n";
 
-cout << fillWithPrimesVec(d);
+int e[]{-3, 3, 5, -2, 8, 5, 8, -2};
+size_t sze = sizeof(e)/sizeof(*e);
+vector<int> f(e, e+sze);
+cout << "Filling gaps: ";
+for (auto x : e) cout << x << " ";
+auto laste = fillGaps(e, sze);
+cout << "\n becomes: ";
+for (auto x : e) cout << x << " ";
+cout << "\n max value: " << laste << "\n";
+cout << "Filling gaps: ";
+for (auto x : f ) cout << x << " ";
+auto lastf = fillGapsVec(f);
+cout <<"\n becomes: ";
+for (auto x : f) cout << x << " ";
+cout << "\n max value: " << lastf << "\n";
+
+int g[]{1, 2, 3, 4, 5, 6, 7};
+size_t szg = sizeof(g)/sizeof(*g);
+vector<int> h(g, g+szg);
+cout << "Original arr: ";
+for (auto x : g) cout << x << " ";
+auto newDimg = blockRem(g, szg, 2, 5);
+cout << "\nAfter 'removing': ";
+for (size_t i = 0; i < newDimg; ++i)
+cout << g[i] << " ";
+cout << "\n";
+cout << "Original vec: ";
+for (auto x : h) cout << x << " ";
+auto newDimh = blockRemVec(h, 2, 5);
+cout << "\nAfter removing: ";
+// vector has been resized by the function
+for (auto x : h) cout << x << " ";
+cout << "\n";
+
 
 return 0;
 }
