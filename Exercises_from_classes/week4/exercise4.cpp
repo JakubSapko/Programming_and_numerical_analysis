@@ -53,15 +53,31 @@ int fillWithPrimes(int arr[], size_t sz){
 	return arr[sz-1];
 }
 
-/*int fillGaps(int arr[], size_t sz){
-	int min = *min_element(arr, arr+sz);
-	for (int i = 0; i < sz; i++){
-		if (arr[i] == min){continue;}
-		else 
-	}
-	return arr[sz-1];
-	}
-*/
+int fillGaps(int arr[], size_t sz)
+{
+    int min = INT32_MAX;
+    int max = INT32_MIN;
+    for (size_t i = 0; i < sz; i++) {
+        if (arr[i] < min)
+            min = arr[i];
+        if (arr[i] > max)
+            max = arr[i];
+    }
+    int lmin = min;
+    int w = min;
+    do {
+        for (size_t i = 0; i < sz; i++)
+            if (arr[i] == min)
+                arr[i] = w;
+        w++;
+        lmin = min;
+        min = INT32_MAX;
+        for (size_t i = 0; i < sz; i++)
+            if (arr[i] <= min && arr[i] > lmin)
+                min = arr[i];
+    } while (lmin != max);
+    return 0;
+}
 
 size_t blockRem(int arr[], size_t sz, size_t from, size_t to){
 	int i, j = 0;
@@ -100,14 +116,25 @@ int numDiffVec(const vector<int>& vec){
     return val; 
 }
 
+int fillWithPrimesVec(vector<int>& vec){
+	for (int i = 0; i < vec.size(); i++){
+		for (int j = 0; j<INT_MAX; j++){
+			if (isPrime(j)){
+				vec.push_back(j);}
+			else{continue;}
+			}
+		}
+	
+	return vec[0];
+}
+
 int main(){
 
-int a[]{1, 1, 1, 3, 1, 1, 2};
-size_t sza = sizeof(a)/sizeof(*a);
-vector<int> b(a, a+sza);
+int c[15];
+size_t szc = sizeof(c)/sizeof(*c);
+vector<int> d(szc,0);
 
-
-cout << numDiffVec(b);
+cout << fillWithPrimesVec(d);
 
 return 0;
 }
