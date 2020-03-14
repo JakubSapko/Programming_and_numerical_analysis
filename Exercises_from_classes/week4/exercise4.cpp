@@ -55,8 +55,8 @@ int fillWithPrimes(int arr[], size_t sz){
 
 int fillGaps(int arr[], size_t sz)
 {
-    int min = INT32_MAX;
-    int max = INT32_MIN;
+    int min = INT_MAX;
+    int max = INT_MIN;
     for (size_t i = 0; i < sz; i++) {
         if (arr[i] < min)
             min = arr[i];
@@ -71,7 +71,7 @@ int fillGaps(int arr[], size_t sz)
                 arr[i] = w;
         w++;
         lmin = min;
-        min = INT32_MAX;
+        min = INT_MAX;
         for (size_t i = 0; i < sz; i++)
             if (arr[i] <= min && arr[i] > lmin)
                 min = arr[i];
@@ -117,14 +117,16 @@ int numDiffVec(const vector<int>& vec){
 }
 
 int fillWithPrimesVec(vector<int>& vec){
-	for (int i = 0; i < vec.size(); i++){
-		for (int j = 0; j<INT_MAX; j++){
-			if (isPrime(j)){
-				vec.push_back(j);}
-			else{continue;}
-			}
-		}
-	
+	bool a = true;
+	int i = 1;
+	int j = 0;
+	while (a){
+		if (isPrime(i)){
+			vec[j] = i;
+			j++;
+			if (j==vec.size()){a = false;}}
+		i++;
+	}
 	return vec[0];
 }
 
