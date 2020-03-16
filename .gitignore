@@ -1,4 +1,1 @@
 *.exe
-/Exercises_from_classes/.idea
-/Exercises_from_classes/cmake-build-debug
-/Exercises_from_classes/CMakeLists.txt
