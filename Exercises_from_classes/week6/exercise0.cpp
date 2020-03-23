@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
 	else {
 		unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
 		default_random_engine e (seed);
-		uniform_real_distribution<> dist(0,2);
+		uniform_real_distribution<> dist(0,1);
 		int N = atoi(argv[1]);
 		int inside = 0;
 		for (int i = 0; i<N; i++){
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 		}
 		cout << "W polu: " << inside << endl;
 		cout << "Wszystkich: " << N << endl;
-		double appPi = (static_cast<double>(inside)/static_cast<double>(N))*16;
+		double appPi = (static_cast<double>(inside)/static_cast<double>(N))*4;
 		cout << "Approksymowana wartosc pi wyniosla: " << appPi;
 	}
 
