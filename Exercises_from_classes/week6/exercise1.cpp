@@ -8,6 +8,7 @@ using namespace std;
 int main(int argc, char* argv[]){
 	if (argc != 4){cout << "Niepoprawna ilosc argumentow programu. Program przyjmuje 3 argumenty podczas uruchomienia (mi, sigma, N)";}
 	else if(atoi(argv[3]) <= 0){cout <<"Liczba punktow do wygenerowania musi byc wieksza od zera!";}
+	else if(atof(argv[2]) < 0){cout << "Wartosc odchylenia standardowego nie moze byc ujemna.";}
 	else{
 		double mi = atof(argv[1]);
 		double sigma = atof(argv[2]);

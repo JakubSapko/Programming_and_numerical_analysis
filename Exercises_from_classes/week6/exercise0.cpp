@@ -9,7 +9,7 @@ using namespace std;
 int main(int argc, char *argv[]){
 	
 	if (argc!=2){cout << "Podano zla liczbe argumentow programu. Program przyjmuje jedna wartosc poczatkowa N.";}
-	else if (argv[1] < 0 ){cout << "Podany argument jest nieprawidlowy. Oczekiwana wartosc argumentu powinna byc liczba dodatnia.";}
+	else if (atoi(argv[1]) < 0 ){cout << "Podany argument jest nieprawidlowy. Oczekiwana wartosc argumentu powinna byc liczba dodatnia.";}
 	else {
 		unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
 		default_random_engine e (seed);
