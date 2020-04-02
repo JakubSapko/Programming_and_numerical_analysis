@@ -59,51 +59,79 @@ void printPoly(const std::vector<double> &c){
 	void polyCoeff(const std::vector<double> &px, const std::vector<double> &py, std::vector<double> &c);
 
 	for (int i=0; i<c.size(); i++){
-
-		if(c[i]!=0){
-
-			if(i==0){
-			std::cout<<c[i]<<" ";
-				}
-			else if(i==1){
-
-				if(abs(c[i])==1){
-					if(c[i]>0){
-					std::cout<<"+"<<" "<<"x"<<" ";
-					}
-					else{
-					std::cout<<"-"<<" "<<"x"<<" ";
-					}
-				}
-			else {
-				std::cout<<"+"<<" "<<c[i]<<"x"<<" ";
-				}
-			}
-
-		else{
-
-			if(abs(c[i])==1){
-					if(c[i]>0){
-					std::cout<<"+"<<" "<<"x**"<<i<<" ";
-					}
-					else{
-					std::cout<<"-"<<" "<<"x**"<<i<<" ";
-					}
-				}
-			else{
-				if(c[i]>0){
-					std::cout<<"+"<<" "<<c[i]<<"x**"<<i<<" ";
-					}
-					else{
-					std::cout<<"-"<<" "<<c[i]<<" "<<"x"<<i<<" ";
-					}
-				}
-			}
-		}
+        if (i == 0 && c[0]!=0){
+            std::cout << c[0];
+        }
+        else{
+            if (c[i] == 0){
+                continue;
+            }
+            else if (c[i]>0){
+                if(i>1){
+                    if (c[i] != 1){
+                        std::cout << "+" << c[i] << "*x^" << i;
+                    }
+                    else {
+                        std :: cout << "+x^" << i;
+                    }
+                }
+                else{
+                    if (c[i] != 1){
+                        std::cout << c[i] << "*x";
+                    }
+                    else {
+                        std::cout << "+x";
+                    }
+                }
+            }
+            else{
+                if(i>1){
+                    if (c[i] != -1){
+                        std::cout << c[i] << "*x^" << i;
+                    }
+                    else {
+                        std :: cout << "-x^" << i;
+                    }
+                }
+                else{
+                    if (c[i] != -1){
+                        std::cout << c[i] << "*x";
+                    }
+                    else {
+                        std :: cout << "-x";
+                    }
+                }
+            }
+        }
 	}
 }
 
+/*
+void printPolynoCoeff(const std::vector<double> &c){
+
+	//void polyCoeff(const std::vector<double> &px, const std::vector<double> &py, std::vector<double> &c);
+
+	for (int i=0; i<c.size(); i++){
+        if (i == 0 && c[0]!=0){
+            std::cout << c[0];
+        }
+        else{
+            if (c[i]>0){
+                std::cout << "+" << c[i] << "*x^" << i;
+            }
+            else if (c[i] == 0){
+                continue;
+            }
+            else{
+            std::cout << c[i] << "*x^" << i;
+            }
+        }
+	}
+
+}*/
+
 int main() {
+//std::vector<double> a{-5, 1, -2, 3, 0, 1};
 std::vector<double> px{-1, 0, 2, 3};
 std::vector<double> py{1, 1, 7, 25};
 std::vector<double> coef;
@@ -111,6 +139,9 @@ polyCoeff(px,py,coef);
 for(auto i: coef){
 std::cout<<i<<" "<<std::endl;
 }
+std :: cout << "y = ";
 printPoly(coef);
+//std :: cout << "y = ";
+//printPoly(a);
 return 0;
 }

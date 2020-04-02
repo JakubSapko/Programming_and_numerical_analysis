@@ -42,10 +42,12 @@ void binSearch(vector<int>* v, int z, int bg, int en){
         cout << "Liczba " << z << " nie pojawia sie we wprowadzonym wektorze." << endl;
         return;
     }
-    if (v->at(w) == z){
-        cout << "Liczba " << z << " pojawia sie w wektorze na komorce o indeksie rownym: " << w << endl;
-        return;
+    else{
+        if (v->at(w) == z){
+            cout << "Liczba " << z << " pojawia sie w wektorze na komorce o indeksie rownym: " << w << endl;
+            return;
+        }
+        else if (v->at(w) >= z){binSearch(v, z, bg, w);}
+        else if (v->at(w) <= z){binSearch(v, z, w, en);}
     }
-    else if (v->at(w) >= z){binSearch(v, z, bg, w);}
-    else if (v->at(w) <= z){binSearch(v, z, w, en);}
 }
