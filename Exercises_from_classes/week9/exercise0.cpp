@@ -28,7 +28,7 @@ int main (){
     cout << simpsonIntegration (square , -1, 1, 6) <<endl;
     cout << simpsonIntegration (xexp , 0, 1, 6) <<endl;
     cout << simpsonIntegration (poly , 0, 1, 6) <<endl;
-    cout << simpsonIntegration (poly , 0, 1, 100) <<endl;
+    cout << simpsonIntegration (poly , 1, 0, 100) <<endl;
     cout << simpsonIntegration (nullptr, 0, 1, 100) << endl;
     cout << simpsonIntegration (square, -1, 1, 11);
 return 0;
@@ -41,7 +41,7 @@ double simpsonIntegration (double (*f)(double), double from , double to , int n)
     if (f == nullptr){cout << "Brak zdefiniowanej funkcji\n"; return 0;}
     else if (n%2!=0){cout << "Algorytm dziala tylko dla parzystych wartoœci n\n"; return 0;}
     else{
-    stepSize = abs((from - to))/n;
+    stepSize = (to-from)/n;
     integration = f(from)+f(to);
     for (int i = 1; i<=n-1; i++){
         k = from + i*stepSize;
