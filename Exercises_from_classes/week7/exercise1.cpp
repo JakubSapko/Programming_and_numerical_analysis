@@ -14,7 +14,7 @@ double sin2(double x)
 
 double calka(double x1, double x2, double (*func) (double), int w){
     if (func == nullptr){cout << "Nie podano zadnej funkcji" << endl; exit(1);}
-    double sr = (x2-x1)/static_cast<double>(w);
+    double sr = (x2-x1)*((func(x1)+func(x2))/2);
     double sum = 0;
     for (int i = 0; i<w; i++){sum += sr*func(x1+i*sr+sr/2);}
     return sum;

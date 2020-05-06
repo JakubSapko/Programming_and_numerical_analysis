@@ -7,7 +7,7 @@ using namespace std;
 
 
 double Diff(double (*f)(double), double x){
-    double h = 0.0001;
+    double h = 0.1;
     return ((f(x+h)-f(x))/h);
 }
 
