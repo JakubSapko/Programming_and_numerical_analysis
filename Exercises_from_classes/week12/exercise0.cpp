@@ -1,61 +1,63 @@
 #include <iostream>
-#include <cmath>
+#include <vector>
+using namespace std;
 
+class Interpolator
+{
+private:
+	vector<double> *x;
+	vector<double>* y;
+public:
+	Interpolator()
+	{
+		x = nullptr;
+		y = nullptr;
+	}
+	Interpolator(vector<double> &x, vector<double> &y)
+	{
+		if(x.size() != y.size())
+		{
+			std::cout << "[ERR] X and Y dimension mismatch!";
+			exit(1);
+		}
+		this->x = new vector<double>(x);
+		this->y = new vector<double>(y);
+	}
+	~Interpolator()
+	{
+		if(x) delete x;
+		if(y) delete y;
+	}
+	double operator()(double val)
+	{
 
-class Wektor{
-    private:
-        double x;
-        double y;
-        double z;
-    public:
-        void setX(double a){x = a;}
-        void setY(double a){y = a;}
-        void setZ(double a){z = a;}
-        double getX() const { return x;}
-        double getY() const { return y;}
-        double getZ() const { return z;}
-        Wektor ( const double a =0. , const double b =0. , const double c =0.)
-        : x ( a ) , y ( b ) , z ( c ){}
-        double getModule (){ return sqrt ( x * x + y * y + z * z );}
-        friend std :: ostream & operator <<( std :: ostream & out , const Wektor & c );
-        Wektor operator+(const Wektor& w) const {
-            return Wektor(x+w.getX(), y+w.getY(), z+w.getZ());
-        };
-        Wektor operator-(const Wektor& w) const {
-            return Wektor(x-w.getX(), y-w.getY(), z-w.getZ());
-        };
-        double operator*(const Wektor& w) const {
-            return x*w.getX()+y*w.getY()+z*w.getZ();
-        };
-        bool operator==(const Wektor& w) const {
-            return (x==w.getX() && y==w.getY() && z==w.getZ());
-        };
-        Wektor operator-() const {
-            return Wektor(-x, -y, -z);
-        };
-        };
+		double sum = 0.;
+		for(int ii=0; ii<x->size(); ii++)
+		{
+			double prod = 1.;
+			for(int jj=0; jj<x->size(); jj++)
+			{
+				if(ii == jj)
+					continue;
+				prod *= (val - (*x)[jj])/((*x)[ii]-(*x)[jj]);
+			}
+			sum += ((*y)[ii]*prod); 
+		}
+		return sum;
+	}
+};
 
-        std :: ostream & operator <<( std :: ostream & os , const Wektor & w )
-        {
-        os << "(" << w . x << "," << w . y << "," << w . z << ")";
-        return os;
-        };
-
-
-int main (){
-
-    Wektor w(5. , -1. , 3.);
-    Wektor v;
-    v.setX(1.);
-    v.setY(2.);
-    v.setZ( -3.);
-
-    std :: cout << w << std :: endl << v << std :: endl;
-    std :: cout << -w << std :: endl;
-    std :: cout << w + v << std :: endl;
-    std :: cout << w - v << std :: endl;
-    std :: cout << w * v << std :: endl;
-    std :: cout << ( w == v ) << std :: endl;
-    std :: cout << ( Wektor (5. , -1. , 3.)== w ) << std :: endl;
-    return 0;
+int main()
+{
+	vector<double> X;
+	vector<double> Y;
+	for(int ii = -20; ii<20; ii++)
+	{	
+		X.push_back(ii);
+		Y.push_back( (ii-1)*(ii+2)*(ii+7) );
+	}
+	Interpolator interp(X,Y);
+	for(int ii=-2; ii<7; ii++)
+		cout << interp(ii+0.5) << " " << (ii+0.5-1)*(ii+0.5+2)*(ii+0.5+7) << std::endl;
+	return 0;
 }

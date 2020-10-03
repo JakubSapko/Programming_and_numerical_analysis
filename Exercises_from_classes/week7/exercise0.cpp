@@ -1,53 +1,44 @@
 #include <iostream>
-#include <vector>
+#include <cmath>
 
 
 using namespace std;
 
 
-void binSearch(vector<int>* v, int z, int bg, int en);
-
-
-int main(){
-    int n, ele, toFind;
-    vector<int> v;
-    cout << "Podaj wymiar wektora: ";
-    cin >> n;
-    if (n<=0){
-        cout << "Podaj dodatnia liczbe elementow wektora";
-        return -1;
-    }
-    cout << "Podaj elementy: " << endl;
-    for (int i=0; i<n; i++){
-            cin >> ele;
-            v.push_back(ele);
-            if (i>0){
-                if (v[i-1]>v[i]){
-                    cout << "Elementy wektora maja byc wprowadzone w kolejnosci niemalajacej!";
-                    break;
-                }
-            }
-            /*cout << v[i] << endl;*/
-    }
-    cout << "Podaj liczbe do znalezienia: ";
-    cin >> toFind;
-    binSearch(&v, toFind, 0, n);
-    return 0;
+double sin2(double x)
+{
+return sin(x)*sin(x);
 }
 
+void calka(double x1, double x2, double (*ftab[])(double), int s, int n);
 
-void binSearch(vector<int>* v, int z, int bg, int en){
-    int w = abs(bg + en)/2;
-    if (w - bg < 1 || en - w < 1){
-        cout << "Liczba " << z << " nie pojawia sie we wprowadzonym wektorze." << endl;
-        return;
-    }
-    else{
-        if (v->at(w) == z){
-            cout << "Liczba " << z << " pojawia sie w wektorze na komorce o indeksie rownym: " << w << endl;
-            return;
+
+int main()
+{
+double (*ftab[])(double) = {sin, cos, nullptr, nullptr, sin2};
+calka(0.0, M_PI, ftab, 5, 10);
+cout << endl;
+calka(0.0, -M_PI, ftab, 5, 1000);
+cout << endl;
+calka(5.0, 5.0, ftab, 5, 1000);
+cout << endl;
+calka(0.0, M_PI, ftab, 5, -6);
+cout << endl;
+
+return 0;
+}
+
+void calka(double x1, double x2, double (*ftab[])(double), int s, int n){
+    if(n<=0){printf("Liczba przedzialow musi byc wieksza od zera"); exit(0);}
+    for(int i = 0; i<s; i++){
+     if (ftab[i] == nullptr){printf("Brak funkcji. \n"); continue;}
+     else{
+        double sr = (x2-x1)/static_cast <double> (n);
+        double suma = 0;
+        for (int k = 0; k < n; k++){
+            suma += sr*(ftab[i](x1+k*sr)+ftab[i](x1+(k+1)*sr))/2;
         }
-        else if (v->at(w) >= z){binSearch(v, z, bg, w);}
-        else if (v->at(w) <= z){binSearch(v, z, w, en);}
+        printf("Calka z funkcji nr %d w zakresie od %f do %f wyniosla %E. \n", i, x1, x2, suma);
+     }
     }
 }

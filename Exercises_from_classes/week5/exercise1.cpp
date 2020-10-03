@@ -1,33 +1,32 @@
 #include <iostream>
 #include <stdlib.h>
+#include <chrono>
+#include <random>
 
 using namespace std;
-int placeholder = 0;
-
-/*Trochê na si³e, ale dzia³a*/
-void logis(long double a, long double x0, int n){
-    if (placeholder == n){return;}
-    else{
-    long double x = a*x0*(1-x0);
-    cout << placeholder+1 << "  " << x << endl;
-    placeholder++;
-    logis(a, x, n);
-    } 
-}
 
 int main(int argc, char* argv[]){
-
-    if (argc != 4){
-        cout << "Nieprawid³owa liczba argumentów, podaj wszystkie 3 parametry(a, x0, n)";
-    }
-    else{
-        long double a = atof(argv[1]);
-        long double x0 = atof(argv[2]);
-        int n = atoi(argv[3]);
-        cout << "a = " << a << " x0 = " << x0 << " n = " << n << endl; 
-        cout << "0 " << x0 << endl;
-        logis(a, x0, n);
-    }
-
+	if (argc != 4){cout << "Niepoprawna ilosc argumentow programu. Program przyjmuje 3 argumenty podczas uruchomienia (mi, sigma, N)";}
+	else if(atoi(argv[3]) <= 0){cout <<"Liczba punktow do wygenerowania musi byc wieksza od zera!";}
+	else if(atof(argv[2]) < 0){cout << "Wartosc odchylenia standardowego nie moze byc ujemna.";}
+	else{
+		double mi = atof(argv[1]);
+		double sigma = atof(argv[2]);
+		int N = atoi(argv[3]);
+		int mniejszy = 0;
+		int wiekszy = 0;
+		unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
+		default_random_engine e (seed);
+		normal_distribution<double> dist(mi, sigma);
+		for (int i = 0; i<N; i++){
+			double x = dist(e);
+			if ((x>-sigma) && (x<sigma)){mniejszy++;}
+			if ((x>-2*sigma) && (x<2*sigma)){wiekszy++;}
+		}
+	double calka1 = (static_cast<double>(mniejszy)/static_cast<double>(N));
+	double calka2 = (static_cast<double>(wiekszy)/static_cast<double>(N));
+	cout << "Calka na przedziale (" << sigma-mi << ", " << sigma+mi << ") = " << calka1 << endl;
+	cout << "Calka na przedziale (" << sigma-2*mi << ", " << sigma+2*mi << ") = " << calka2 << endl;
+	}
 return 0;
 }

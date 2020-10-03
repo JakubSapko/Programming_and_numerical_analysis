@@ -1,102 +1,61 @@
-#include <cmath>
-#include <iomanip>
 #include <iostream>
-
-using namespace std;
-
-
-template <class T >
-bool secant ( double &x , T f , double x0 , double x1 , double eps , int n = 1000){
-    x = x0;
-    double c, xp, xInter, xm;
-    if(eps<=0){cout << "Wrong epsilon" << endl; return false;}
-    if(n<=0){cout << "Wrong n" << endl; return false;}
-    if(f==nullptr){cout <<"No function" << endl; return false;}
-    else{
-    do{
-            //intermediate value
-            xInter = (x0*f(x1)-x1*f(x0))/(f(x1)-f(x0));
-            //xInter = x1-f(x1)*(x1-x0)/(f(x1)-f(x0));
-            c = f(xInter)*f(x0);
-            x0 = x1;
-            x1 = xInter;
-            n--;
-            if (c==0.0){
-                break;
-            }
-            if (n==0){
-                cout << "Number of iterations exceeded.";
-                return false;
-            }
-            xm = (x0*f(x1)-x1*f(x0))/(f(x1)-f(x0));
-        } while(fabs(xm - xInter)>= eps);}
-    x = xInter;
-    return true;
-}
+#include <cmath>
 
 
-template <class T >
-bool secantExtr ( double &x , T f , double x0 , double x1 , double eps , int n = 1000){
-    x = x0;
-    double c, xp, xInter, xm;
-    double h = 1e-7;
-    if(eps<=0){cout << "Wrong epsilon" << endl; return false;}
-    if(n<=0){cout << "Wrong n" << endl; return false;}
-    if(f==nullptr){cout <<"No function" << endl; return false;}
-    else{
-    do{
-            //(f(x+h)-f(x))/h
-            //intermediate value
-            xInter = (x0*((f(x1+h)-f(x1))/h)-x1*(f(x0+h)-f(x0))/h)/(((f(x1+h)-f(x1))/h)-(f(x0+h)-f(x0))/h);
-            //xInter = x1-f(x1)*(x1-x0)/(f(x1)-f(x0));
-            c = f(xInter)*f(x0);
-            //c = (f(xInter+h)-f(xInter))/h*(f(x0+h)-f(x0))/h;
-            x0 = x1;
-            x1 = xInter;
-            n--;
-            if (c==0.0){
-                break;
-            }
-            if (n==0){
-                cout << "Number of iterations exceeded.";
-                return false;
-            }
-            xm = (x0*((f(x1+h)-f(x1))/h)-x1*(f(x0+h)-f(x0))/h)/(((f(x1+h)-f(x1))/h)-(f(x0+h)-f(x0))/h);
-        } while(fabs(xm - xInter)>= eps);}
-    x = xInter;
-    return true;
-}
+class Wektor{
+    private:
+        double x;
+        double y;
+        double z;
+    public:
+        void setX(double a){x = a;}
+        void setY(double a){y = a;}
+        void setZ(double a){z = a;}
+        double getX() const { return x;}
+        double getY() const { return y;}
+        double getZ() const { return z;}
+        Wektor ( const double a =0. , const double b =0. , const double c =0.)
+        : x ( a ) , y ( b ) , z ( c ){}
+        double getModule (){ return sqrt ( x * x + y * y + z * z );}
+        friend std :: ostream & operator <<( std :: ostream & out , const Wektor & c );
+        Wektor operator+(const Wektor& w) const {
+            return Wektor(x+w.getX(), y+w.getY(), z+w.getZ());
+        };
+        Wektor operator-(const Wektor& w) const {
+            return Wektor(x-w.getX(), y-w.getY(), z-w.getZ());
+        };
+        double operator*(const Wektor& w) const {
+            return x*w.getX()+y*w.getY()+z*w.getZ();
+        };
+        bool operator==(const Wektor& w) const {
+            return (x==w.getX() && y==w.getY() && z==w.getZ());
+        };
+        Wektor operator-() const {
+            return Wektor(-x, -y, -z);
+        };
+        };
 
-double f1 ( double x ) { return x * x ; }
-double f2 ( double x ) { return x * x - 2.; }
-double f3 ( double x ) { return (exp( x ) + x - 1); }
-double f4 ( double x ) { return (log( x ) - x +1.0);}
-double f5 ( double x ) { return sin( x +0.5);}
-int main () {
-    double x;
-    for ( auto fx : { f1 , f2 , f3 , f4 , f5 }) {
-        for ( auto eps : {0.1 , 0.01 , 0.001 , 0.0001 , 0.0000001}) {
-            if ( secant (x , fx , 0.1 , 3 , eps )) {
-                cout << setprecision (8) << "eps = " << eps
-                << "\t root = " << x << endl;
-            } else {
-                cout << " Unable to find root " <<endl;
-            }
-        }
+        std :: ostream & operator <<( std :: ostream & os , const Wektor & w )
+        {
+        os << "(" << w . x << "," << w . y << "," << w . z << ")";
+        return os;
+        };
 
-        cout << endl ;
-    }
-    cout << "Extremal points :" << endl ;
-    for ( auto fx : { f1 , f2 , f4 , f5 }) {
-        for ( auto eps : {0.1 , 0.01 , 0.001 , 0.0001 , 0.0000001}) {
-            if ( secantExtr (x , fx , 0.3 , 2 , eps )) {
-                cout <<setprecision (8) << "eps = " << eps
-                     << "\t point = " << x <<endl ;
-            } else {
-                cout << " Unable to find extremum " << endl ;
-                }
-            }
-            cout <<endl ;
-    }
+
+int main (){
+
+    Wektor w(5. , -1. , 3.);
+    Wektor v;
+    v.setX(1.);
+    v.setY(2.);
+    v.setZ( -3.);
+
+    std :: cout << w << std :: endl << v << std :: endl;
+    std :: cout << -w << std :: endl;
+    std :: cout << w + v << std :: endl;
+    std :: cout << w - v << std :: endl;
+    std :: cout << w * v << std :: endl;
+    std :: cout << ( w == v ) << std :: endl;
+    std :: cout << ( Wektor (5. , -1. , 3.)== w ) << std :: endl;
     return 0;
 }

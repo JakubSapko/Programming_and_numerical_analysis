@@ -1,54 +1,54 @@
-#include <cmath>
-#include <iostream>
+#include <cmath >
+#include <iomanip >
+#include <iostream >
 
 
 using namespace std;
 
 
-double simpsonIntegration (double (*f)(double), double from , double to , int n);
+template <class T>
+bool bisection (double &x, T f, double from , double to , double eps ){
+    if((f(from)*f(to)>=0) || (to<from) || (eps<0) || (eps>(to-from)) || (to-from)<0){
+        cout << "Zle podane dane\n";
+        return false;
+    }
+    else{
+    double mid=from;
 
-
-double square(double x) { return x * x; };
-
-
-double xexp(double x) { return x * exp(x); };
-
-
-double poly(double x){
-    double sum = 0;
-    for (int i = 1; i != 9; ++i){
-        sum += (i + 1) * pow(x, i);
-        }
-
-return sum;
+    while((to-from)>=eps){
+        mid = (to+from)/2;
+        if (f(mid) == 0.0){break;}
+        else if(f(mid)*f(from)<0){to = mid;}
+        else{from = mid;}
+        //cout <<"mid " << mid << " f(mid) " <<  f(mid) << endl;
+    }
+    //cout << "mid " << mid;
+    x = mid;
+    return x;
+    }
 }
+
+
+double f1(double x) { return x * x; }
+double f2(double x) { return x * x - 2.; }
+double f3(double x) { return exp(x) + x - 1; }
 
 
 int main (){
-    cout << simpsonIntegration (square , -1, 1, 6) <<endl;
-    cout << simpsonIntegration (xexp , 0, 1, 6) <<endl;
-    cout << simpsonIntegration (poly , 0, 1, 6) <<endl;
-    cout << simpsonIntegration (poly , 1, 0, 100) <<endl;
-    cout << simpsonIntegration (nullptr, 0, 1, 100) << endl;
-    cout << simpsonIntegration (square, -1, 1, 11);
-return 0;
-}
 
-double simpsonIntegration (double (*f)(double), double from , double to , int n){
-    double integration = 0.0,
-           stepSize,
-           k;
-    if (f == nullptr){cout << "Brak zdefiniowanej funkcji\n"; return 0;}
-    else if (n%2!=0){cout << "Algorytm dziala tylko dla parzystych wartoœci n\n"; return 0;}
-    else{
-    stepSize = (to-from)/n;
-    integration = f(from)+f(to);
-    for (int i = 1; i<=n-1; i++){
-        k = from + i*stepSize;
-        if(i%2==0){integration = integration + 2*(f(k));}
-        else{integration = integration + 4*(f(k));}
+    double x;
+    for (auto fx : {f1 , f2 , f3}){
+            for (auto eps : {0.1 , 0.01 , 0.001 , 0.0001 , 0.0000001}){
+                if ( bisection (x, fx , -1, 6, eps )){
+                    cout << setprecision (8) << "eps = " << eps
+                                << "\t root = " << x << endl;
+                }
+                else{
+                    cout << "Unable to find root" << endl;
+                    break;
+                }
+            }
+            cout << endl;
     }
-    integration = integration*stepSize/3;
-    return integration;
-    }
+return 0;
 }

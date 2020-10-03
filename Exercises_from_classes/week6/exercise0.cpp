@@ -1,32 +1,53 @@
 #include <iostream>
-#include <random>
-#include <stdlib.h>
-#include <chrono>
-#include <cmath>
+#include <vector>
+
 
 using namespace std;
 
-int main(int argc, char *argv[]){
-	
-	if (argc!=2){cout << "Podano zla liczbe argumentow programu. Program przyjmuje jedna wartosc poczatkowa N.";}
-	else if (atoi(argv[1]) < 0 ){cout << "Podany argument jest nieprawidlowy. Oczekiwana wartosc argumentu powinna byc liczba dodatnia.";}
-	else {
-		unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
-		default_random_engine e (seed);
-		uniform_real_distribution<> dist(0,1);
-		int N = atoi(argv[1]);
-		int inside = 0;
-		for (int i = 0; i<N; i++){
-			double x = dist(e);
-			double y = dist(e);
-			double distance = sqrt(x*x+y*y);
-			if (distance <= 1){ inside++;}
-		}
-		cout << "W polu: " << inside << endl;
-		cout << "Wszystkich: " << N << endl;
-		double appPi = (static_cast<double>(inside)/static_cast<double>(N))*4;
-		cout << "Approksymowana wartosc pi wyniosla: " << appPi;
-	}
 
-return 0;
+void binSearch(vector<int>* v, int z, int bg, int en);
+
+
+int main(){
+    int n, ele, toFind;
+    vector<int> v;
+    cout << "Podaj wymiar wektora: ";
+    cin >> n;
+    if (n<=0){
+        cout << "Podaj dodatnia liczbe elementow wektora";
+        return -1;
+    }
+    cout << "Podaj elementy: " << endl;
+    for (int i=0; i<n; i++){
+            cin >> ele;
+            v.push_back(ele);
+            if (i>0){
+                if (v[i-1]>v[i]){
+                    cout << "Elementy wektora maja byc wprowadzone w kolejnosci niemalajacej!";
+                    break;
+                }
+            }
+            /*cout << v[i] << endl;*/
+    }
+    cout << "Podaj liczbe do znalezienia: ";
+    cin >> toFind;
+    binSearch(&v, toFind, 0, n);
+    return 0;
+}
+
+
+void binSearch(vector<int>* v, int z, int bg, int en){
+    int w = abs(bg + en)/2;
+    if (w - bg < 1 || en - w < 1){
+        cout << "Liczba " << z << " nie pojawia sie we wprowadzonym wektorze." << endl;
+        return;
+    }
+    else{
+        if (v->at(w) == z){
+            cout << "Liczba " << z << " pojawia sie w wektorze na komorce o indeksie rownym: " << w << endl;
+            return;
+        }
+        else if (v->at(w) >= z){binSearch(v, z, bg, w);}
+        else if (v->at(w) <= z){binSearch(v, z, w, en);}
+    }
 }

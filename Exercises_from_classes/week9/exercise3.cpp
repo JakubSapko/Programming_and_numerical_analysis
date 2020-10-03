@@ -1,56 +1,99 @@
 #include <iostream>
 #include <vector>
-
+#include <stdio.h>
+#include <string.h>
+#include <chrono>
+#include <random>
 
 using namespace std;
 
-vector <double>* centralDiff(const vector <double>* x, const vector <double>* y);
+class Student{
+    private:
+        char name[100], surname[100];
+        unsigned albumNo;
+        vector<double>* marks;
+    public:
+        Student(){
+            strcpy(name, "");
+            strcpy(surname, "");
+            albumNo = 0;
+            marks = new vector<double>;
+            }
+        ~Student(){
+            if(marks){delete marks;}
+        }
+        Student(const char* name, const char* surname, unsigned albumNo){
+            strcpy(this->name, name);
+            strcpy(this->surname, surname);
+            this->albumNo = albumNo;
+            marks = new vector<double>;
+        }
+        Student(const Student &osoba){
+            strcpy(this->name, osoba.name);
+            strcpy(this->surname, osoba.surname);
+            this->albumNo = osoba.albumNo;
+            marks = osoba.marks;
+        }
+        void wypiszDane();
+        const char* getName(){return name;}
+        const char* getSurname(){return surname;}
+        unsigned getAlbumNumber(){return albumNo;}
+        double getMark(int n){return (this->marks)->at(n);}
+        void setName(const char* givenName){strcpy(this->name, givenName);}
+        void setSurname(const char* givenSurname){strcpy(this->surname, givenSurname);}
+        void setAlbumNo(unsigned albumNumber){this->albumNo = albumNumber;}
+        //void addMark(double m);
+        //void printMarks();
+        //inline void getAllMarks();
+};
+
+void Student::wypiszDane(){
+    printf("Imie: %s, Nazwisko: %s, Nr Albumu: %d\n", getName(), getSurname(), getAlbumNumber());
+}
+/*
+void Student::addMark(double m){
+    (this->marks)->push_back(m);
+}
 
 
-vector <double>* secondCentralDiff(const vector <double>* x, const vector <double>* y);
-
-
+void Student::printMarks(){
+    for (auto j=marks->begin(); j!=marks->end(); j++){
+            cout << "dupa ";
+        }
+}
+*/
+/*
+inline void Student::getAllMarks(){
+    for(auto iter = marks.begin(); iter!= marks.end();iter++){
+        cout << iter->getMark() << " ";
+    }
+}
+*/
 int main(){
 
-    vector <double> x = { 1, 1.101 , 1.202 , 1.303 , 1.404 , 1.505 , 1.606 , 1.707 , 1.808 , 1.909 };
-    vector <double> y = { 1.975 , 1.85955 , 1.72085 , 1.55678 , 1.36518 , 1.14394 , 0.890923 , 0.603991 , 0.281013 , -0.0801417 };
-    cout << "first:" << endl;
-    vector <double>* v = centralDiff(&x, &y);
-    for (auto i : (*v)){
-        cout << i << " ";
+    unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
+    default_random_engine e (seed);
+    uniform_real_distribution<> dist(2,5);
+    vector<Student> uczniowie{{"Boleslaw", "Chroby", 17061025, {13.0}}, {"Jan", "Matejko", 24061838}, {}, {"Mikolaj", "Kopernik", 19021473}, {}};
+
+    uczniowie[4].setName("Stanislaw");
+    uczniowie[4].setSurname("Lem");
+    uczniowie[4].setAlbumNo(12091921);
+
+    for(auto iter = uczniowie.begin(); iter!=uczniowie.end(); iter++){
+        iter -> wypiszDane();
     }
-    cout << endl;
-    delete v;
-    v = secondCentralDiff(&x, &y);
-    cout << "second:" << endl;
-    for (auto i : (*v)){
-        cout << i << " ";
+    /*
+    for(auto iter = uczniowie.begin(); iter!=uczniowie.end(); iter++){
+        for (int i=0; i<3; i++){
+            double x = dist(e);
+            cout << x << endl;
+            iter -> addMark(x);
+        }
     }
-    cout << endl;
-    delete v;
+    */
+    for(int j = 0; j<3; j++){
+        cout << uczniowie[0].getMark(j) << endl;
+    }
 return 0;
-}
-
-
-vector <double>* centralDiff(const vector <double>* x, const vector <double>* y){
-    vector <double>* result;
-    result = new vector<double>;
-    int rozmiar = (*x).size();
-    for(int i = 1; i<rozmiar-1; i++){
-        double w = (y->at(i+1)-y->at(i-1))/(x->at(i+1)-x->at(i-1));
-        result->push_back(w);
-    }
-    return result;
-}
-
-
-vector <double>* secondCentralDiff(const vector <double>* x, const vector <double>* y){
-    vector <double>* result;
-    result = new vector<double>;
-    int rozmiar = (*x).size();
-    for(int i = 1; i<rozmiar-1; i++){
-        double w = (y->at(i+1)-2*y->at(i)+y->at(i-1))/((x->at(i+1)-x->at(i))*(x->at(i)-x->at(i-1)));
-        result->push_back(w);
-    }
-    return result;
 }

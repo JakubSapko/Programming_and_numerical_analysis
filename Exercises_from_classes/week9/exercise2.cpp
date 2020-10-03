@@ -1,57 +1,80 @@
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 
 
 using namespace std;
 
 
-double forwardDiff(double (*f)(double), double x, double h);
-double backwardDiff(double (*f)(double), double x, double h);
-double centralDiff(double (*f)(double), double x, double h);
-double richardsonDiff(double (*f)(double), double x, double h);
-double centralSecondDiff(double (*f)(double), double x, double h);
-
-double poly(double x){
-    double sum = 0;
-    for (int i=1; i!=9; ++i){
-        sum+=(i+1)*pow(x, i);
-    }
-    return sum;
-}
-
-int main(){
-    auto h = {0.01, 0.00001};
-    auto v = {poly, cos};
-    for (auto hi: h){
-        cout << "h=" << hi << endl;
-        for (auto f: v){
-            cout << forwardDiff(f, 0, hi) << endl;
-            cout << backwardDiff(f, 0, hi) << endl;
-            cout << centralDiff(f, 0, hi) << endl;
-            cout << richardsonDiff(f, 0, hi) << endl;
-            cout << centralSecondDiff(f, 0, hi) << endl;
-            cout << endl;
-        }
-    }
-    return 0;
-}
-
-double forwardDiff(double (*f)(double), double x, double h){
+double Diff(double (*f)(double), double x){
+    double h = 0.1;
     return ((f(x+h)-f(x))/h);
 }
 
-double backwardDiff(double (*f)(double), double x, double h){
-    return ((f(x)-f(x-h))/h);
+
+template <class T>
+bool newton(double &x, T f, double x0 , double eps , int n = 1000){
+    int i = 0;
+    double newx=0;
+    while(abs(newx-x0)>eps||i<n){
+        double newx=x0-(f(x)/Diff(f, x));
+        x=newx;
+        i++;
+    }
+    return x;
 }
 
-double centralDiff(double (*f)(double), double x, double h){
-    return ((f(x+h)-f(x-h))/(2*h));
+
+
+
+
+template <class T>
+bool steffensen (double &x, T f, double x0 , double eps , int n = 1000){
+    int i = 0;
 }
 
-double richardsonDiff(double (*f)(double), double x, double h){
-    return ((-f(x+2*h)+8*f(x+h)-8*f(x-h)+f(x-2*h))/(12*h));
-}
 
-double centralSecondDiff(double (*f)(double), double x, double h){
-    return ((f(x+h)-2*f(x)+f(x-h))/(h*h));
+//Functions//
+
+double f1(double x) { return x * x; }
+double f2(double x) { return x * x - 2.; }
+double f3(double x) { return exp(x) + x - 1; }
+/*
+//Derivatives//
+
+double df1(double x) { return 2*x; }
+double df2(double x) { return 2*x; }
+double df3(double x) { return exp(x)+1;}
+*/
+
+int main () {
+    double x;
+    cout <<"Newton :"<<endl;
+    for (auto fx : {f1 , f2 , f3}) {
+        for (auto eps : {0.1 , 0.01 , 0.001 , 0.0001 , 0.0000001}) {
+            if (newton(x, fx , 1.4, eps )) {
+                cout << setprecision (8) << "\teps = " << eps
+                     << "\troot = " << x <<endl;
+            } else {
+                cout << "Unable to find root" <<endl;
+                break;
+            }
+        }
+        cout <<endl;
+    }
+
+    cout <<"Stefensen :"<<endl;
+    for (auto fx : {f1 , f2 , f3}) {
+        for (auto eps : {0.1 , 0.01 , 0.001 , 0.0001 , 0.0000001}) {
+            if ( steffensen (x, fx , 1.4, eps )) {
+                cout << setprecision (8) << "\teps = " << eps
+                     << "\troot = " << x <<endl;
+            } else {
+                cout << "Unable to find root" <<endl;
+                break;
+            }
+        }
+        cout <<endl;
+    }
+return 0;
 }

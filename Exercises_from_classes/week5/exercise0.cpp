@@ -1,37 +1,32 @@
 #include <iostream>
-#include <algorithm>
+#include <random>
+#include <stdlib.h>
+#include <chrono>
+#include <cmath>
 
 using namespace std;
 
-void minMaxRep(int a[], size_t size, int& mn, size_t& in, int& mx, size_t& ix){
-	in = 0;
-	ix = 0;
-	mn = INT_MAX;
-	mx = INT_MIN;
-	for (int i = 0; i < size; i++){
-		if (a[i]<mn){in = 1; mn = a[i];}
-		else if (a[i]>mx){ix = 1; mx = a[i];}
-		else if (a[i] == mn){in++;}  
-		else if (a[i] == mx){ix++;}
-	}	
-
-}
-
-
-int main(){
-
-	int a[]{2,3,4,2,7,4,7,2};
-	size_t size = sizeof(a)/sizeof(*a);
-	int mn, mx;
-	size_t in, ix;
-	minMaxRep(a, size, mn, in, mx, ix);
-	cout << "Array: [ ";
-	for (size_t i = 0; i<size; i++){
-		cout << a[i] << " ";
+int main(int argc, char *argv[]){
+	
+	if (argc!=2){cout << "Podano zla liczbe argumentow programu. Program przyjmuje jedna wartosc poczatkowa N.";}
+	else if (atoi(argv[1]) < 0 ){cout << "Podany argument jest nieprawidlowy. Oczekiwana wartosc argumentu powinna byc liczba dodatnia.";}
+	else {
+		unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
+		default_random_engine e (seed);
+		uniform_real_distribution<> dist(0,1);
+		int N = atoi(argv[1]);
+		int inside = 0;
+		for (int i = 0; i<N; i++){
+			double x = dist(e);
+			double y = dist(e);
+			double distance = sqrt(x*x+y*y);
+			if (distance <= 1){ inside++;}
+		}
+		cout << "W polu: " << inside << endl;
+		cout << "Wszystkich: " << N << endl;
+		double appPi = (static_cast<double>(inside)/static_cast<double>(N))*4;
+		cout << "Approksymowana wartosc pi wyniosla: " << appPi;
 	}
-	cout << "]\n";
-	cout << "Min = " << mn << " " << in << " times\n";
-	cout << "Max = " << mx << " " << ix << " times\n";
 
 return 0;
 }

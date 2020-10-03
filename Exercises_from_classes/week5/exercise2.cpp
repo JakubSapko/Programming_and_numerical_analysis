@@ -1,59 +1,88 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-template <typename T> void swap(T *xp, T *yp){
-	T temp = *xp;
-	*xp = *yp;
-	*yp = temp;
+template <typename T> void print(const vector<T> &v){
+	cout << " [ ";
+	for (const auto &i : v){
+		cout << i << " ";
+	}
+	cout << "]" << endl;
 }
-
-
-
-template <typename T, typename W> void bubble(T arr[], W n){
-	int i, j;
-	for (i = 0; i< n-1; i++){
-		for (j = 0; j< n-i-1; j++){
-			if (arr[j] > arr[j+1])
-				swap(&arr[j], &arr[j+1]);
+	
+template <typename W> void minMaxRep(const vector<W> &v, W& mn, int& in, W& mx, int& ix){
+	if(v.empty()){
+		cout << "Wektor nie posiada zadnych wartosci." << endl;
+		return;}
+	else if(v.size()==1){
+		in = 1;
+		ix = 1;
+		mn = v[0];
+		mx = v[0];
+		cout << " Min = " << mn << " " << in << " times \n";
+		cout << " Max = " << mx << " " << ix << " times \n";
+	}
+	else{
+		in = 0;
+		ix = 0;
+		mn = v[0];
+		mx = v[0];
+		for (int i = 0; i < v.size(); i++){
+			if (v[i]<mn){in = 1; mn = v[i];}
+			else if (v[i]>mx){ix = 1; mx = v[i];}
+			else if (v[i] == mn){in++;}  
+			else if (v[i] == mx){ix++;}
 		}
+		cout << " Min = " << mn << " " << in << " times \n";
+		cout << " Max = " << mx << " " << ix << " times \n";
 	}
 }
 
-
-
-void wypisz(int tab[10]){
-	cout << "[";
-	for (int i = 0; i< 10; i++){
-		cout << tab[i] << " ";
+int main ()
+{
+	cout << " Int : ";
+	print (vector <int >{ -1 , 2 , -2 , 5 , 3});
+	cout << " Double : ";
+	print (vector < double >{ -1 , 2 , -2 , 5 , 3});
+	// jezeli argument szablonu nie jest jasny
+	// trzeba go podac
+	// w tym przypadku nie jest to konieczne
+	// jawny argumeny szablonu :
+	print < double >(vector <double >{ -1 , 2 , -2 , 5 , 3});
+	cout << " Char : ";
+	print (vector <char>{75 , 119 , 73 , 107 , 63});
+	print (vector <const char*>{ "K", "W", "I", "K", "!"});
+	cout << " Const char * : ";
+	print (vector < const char * >{" One ", " does ", "not",
+	" simply ", " learn ", " template ", "meta - programing " });
+	int ix =0 , in =0;
+	{
+		int mn , mx ;
+		vector <int > v { -1 , 1 , 2, -1 , 5 , 2 , 2 , -1};
+		print ( v );
+		minMaxRep (v , mn , in , mx , ix );
+		cout << " Min = " << mn << " " << in << " times \n";
+		cout << " Max = " << mx << " " << ix << " times \n";
 	}
-	cout << "]";
-	cout << endl;
-}
-
-void wypisz(char tab[10]){
-	cout << "[";
-	for (int i = 0; i< 10; i++){
-		cout << tab[i] << " ";
+	{
+		double mn , mx ;
+		// dla leniwych , decltype (i) jest tym samym typem co i
+		vector < decltype ( mn ) > v { -1.23 , 5.43 , -2.33 , 8.66 , -1.23 , 8.66};
+		print ( v );
+		minMaxRep (v , mn , in , mx , ix );
+		cout << " Min = " << mn << " " << in << " times \n";
+		cout << " Max = " << mx << " " << ix << " times \n";
 	}
-	cout << "]";
-	cout << endl;
-}
-
-int main(){
-
-	int tabi[10] = {9, 4, 2, 1, 3, 6, 7, 2, 9, 0};
-	char tabc[10] = {'b','g','z','x','a','y','r','y','y','e'};
-
-	cout << "Tablica intow przed: " << endl;
-	wypisz(tabi);
-	cout << "Tablica charow przed: " << endl;
-	wypisz(tabc);
-	bubble(tabi, 10);
-	cout << "Tablica intow po: " << endl;
-	wypisz(tabi);
-	bubble(tabc, 10);
-	cout << "Tablica charow po: " << endl;
-	wypisz(tabc);
+	cout << "Wektor z 1 wartoscia" << endl;
+	int mn, mx;
+	vector <int> v{2};
+	minMaxRep(v, mn, in, mx, ix);
+	cout << " Min = " << mn << " " << in << " times \n";
+	cout << " Max = " << mx << " " << ix << " times \n";
+	cout << "Pusty wektor:" << endl;
+	int ma, mi, iz = 0, iw = 0;
+	vector <int> z;
+	minMaxRep(z, ma, iz, mi, iw);
 return 0;
 }
