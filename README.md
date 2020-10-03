@@ -24,3 +24,87 @@ Exercises_from_webpage covers:
   * biggest/smallest from provided
   * primes and primorials
   * GCD, digits, hailstone
+* week 4
+  * min/max
+  * memcpy
+  * egyptian fractions
+  * binary search
+  * arrays and vectors operations
+* week 6
+  * Neville's algorithm
+
+whereas Exercises_from_classes covers:
+* week2
+  * primes, powers
+  * binaries to decimals
+  * approximating sine function's value
+  * summing number's digits values
+  * pseudo-random number guessing "game"
+* week3
+  * as above and recursion
+* week4
+  * logistic map
+  * bubble sort
+  * interpolation
+* week5
+  * Monte Carlo integration
+  * Integrating Gauss' curve
+  * MinMax
+  * Ceasar's cipher
+  * Matrices
+* week6
+  * binary search
+  * rectangle method of integration
+  * Neville's algorithm
+* week7
+  * trapezoidal method of integration
+  * linear interpolation
+  * Gauss' quadrature
+  * Matrices and stack
+  * pointers
+* week8
+  * Simpson's method
+  * diffrentials
+  * Merge Sort
+* week9 
+  * bisection
+  * complex numbers
+  * Newton's and Steffenson's methods
+  * classes
+  * container
+* week10
+  * secant method
+  * multiple files code, classes
+* week11
+  * overloading operators
+  * wrapper class
+  * bubble sort (with iterators)
+  * selection sort
+  * insertion sort
+* week12
+  * functors
+  * quick sort
+  * heap sort
+* week13
+  * recursive merge sort with iterators
+  * lambda functions 
+  * static methods
+  * sets, maps
+* week14
+  * diffrential equations
+  * polimorphism 
+* week15
+  * Adams-Bashford method
+  * Adams-Moulton method
+  * Runge-Kutta method
+  * 3/8 Runge-Kutta method
+
+## Further reading
+
+Besides course's script and Wikipedia pages there were some sources that got essential over the course, which are:
+
+* R. Sedgewick "Algorithms in C++"
+* H. Keller "Analysis of numerical methods"
+* R. K. Gupta "Numerical methods: Fundamentals and Applications"
+
+One probably could get past the course without any external sources, however those make things much easier, clearer and most importantly - interesting.
